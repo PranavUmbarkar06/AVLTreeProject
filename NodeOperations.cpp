@@ -9,17 +9,14 @@ public:
     int rollNo;
     float cg;
     int numsubjects;
-    courses subjects[numsubjects];
+    courses *subjects;
     StudentStructure* left;
     StudentStructure* right;
     int height;
-    StudentStructure(int rollNo,float cg,int numsubjects,courses subjects[]){
+    StudentStructure(int rollNo,float cg,int numsubjects,courses *subjects){
         this->rollNo=rollNo;
         this->cg=cg;
         this->numsubjects=numsubjects;
-        for(int i=0;i<numsubjects;i++){
-            this->subjects[i].courseCode=subjects[i].courseCode;
-            this->subjects[i].marks=subjects[i].courseCode;
-        }
+        this->subjects=subjects;
     }
 };
