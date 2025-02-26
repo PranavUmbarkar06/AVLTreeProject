@@ -2,7 +2,10 @@
 #include <string>
 #include <algorithm>
 using namespace std;
-
+struct courses{
+    int courseCode;
+    int marks;
+};
 class BinaryTree{
     public:
     int rollNo;
