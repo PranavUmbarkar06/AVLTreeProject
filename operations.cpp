@@ -8,7 +8,7 @@ struct courses{
         this->marks=marks;
     }
 };
-void addnewcourse(BinaryTree*& root;int rollno;int code;float  marks){
+void addnewcourse(BinaryTree*& root,int rollno,int code,float  marks){
     BinaryTree* node = root; 
     while(node!=nullptr&&node->rollNo!=rollno){
         if(rollno>node->rollNo){node=node->rightC;}
@@ -26,7 +26,7 @@ void addnewcourse(BinaryTree*& root;int rollno;int code;float  marks){
     else return;
     
 }
-void modifycourses(BinaryTree*& root;int rollno;int code;float  marks){
+void modifycourses(BinaryTree*& root,int rollno,int code,float  marks){
     BinaryTree* node = root; 
     while(node!=nullptr&&node->rollNo!=rollno){
         if(rollno>node->rollNo){node=node->rightC;}
@@ -41,7 +41,7 @@ void modifycourses(BinaryTree*& root;int rollno;int code;float  marks){
     }
     else return;
 }
-void deleteCourse(BinaryTree*& root;int rollno;int code){
+void deleteCourse(BinaryTree*& root,int rollno,int code){
     BinaryTree* node = root; 
     while(node!=nullptr&&node->rollNo!=rollno){
         if(rollno>node->rollNo){node=node->rightC;}
@@ -68,30 +68,30 @@ void deleteCourse(BinaryTree*& root;int rollno;int code){
     }
     else return;
 }
-void modifycgbyrollno(BinaryTree*& root;int rollno;float newcg){
+void modifycgbyrollno(BinaryTree*& root,int rollno,float newcg){
     BinaryTree* node = root; 
     while(node!=nullptr&&node->rollNo!=rollno){
         if(rollno>node->rollNo){node=node->rightC;}
-        else if(rollno<node->rollNo){node=node->leftC;}
+        else{node=node->leftC;}
     }
     if(rollno==node->rollNo){
      node->cg=newcg;
-     }
     }
     else return;
 }
 
-void modifycgbycg(BinaryTree*& root;int rollno;float newcg){
+
+void modifycgbycg(BinaryTree*& root,int rollno,float newcg){
     BinaryTree* node = root; 
     while(node!=nullptr&&node->rollNo!=rollno){
         if(rollno>node->rollNo){node=node->rightC;}
-        else if(rollno<node->rollNo){node=node->leftC;}
+        else{node=node->leftC;}
     }
     if(rollno==node->rollNo){
-     BinaryTree* temp = node;
-     deletestudent(root,rollno);
-     insertstudent()
-     }
+        BinaryTree* temp = node;
+        deletestudent(root,node);
+        temp->cg=newcg;
+        insertstudent(root,temp);
     }
     else return;
 }
