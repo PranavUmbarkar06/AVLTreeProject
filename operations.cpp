@@ -90,7 +90,7 @@ void modifycgbycg(BinaryTree*& root,int rollno,float newcg){
     }
     if(rollno==node->rollNo){
         BinaryTree* temp = node;
-        deletestudent(root,node);
+        deletestudent(root,rollno);
         temp->cg=newcg;
         insertstudent(root,temp);
     }
