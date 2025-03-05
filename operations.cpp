@@ -96,3 +96,6 @@ void modifycgbycg(BinaryTree*& root,int rollno,float newcg){
     }
     else return;
 }
+void deleteStudent(BinaryTree* &root, int rollNo){
+    root->deleteStudentbyRoll(root,rollNo);
+}
