@@ -129,6 +129,51 @@ class BinaryTree{
     
         return (leftHeight-rightHeight);
     }
+
+BinaryTree* findMin(BinaryTree* node) {
+    while (node->leftC != nullptr)
+        node = node->leftC;
+    return node;
+}
+
+void deleteStudentByRoll(BinaryTree* &root, int rollNo) {
+    if (!root)
+        return;
+    if (rollNo < root->rollNo)
+        deleteStudentByRoll(root->leftC, rollNo);
+    else if (rollNo > root->rollNo)
+        deleteStudentByRoll(root->rightC, rollNo);
+    else {
+        if (!root->leftC || !root->rightC) {
+            BinaryTree* temp = root->leftC ? root->leftC : root->rightC;
+            delete root;
+            root = temp;
+        } else {
+            BinaryTree* temp = findMin(root->rightC);
+            root->rollNo = temp->rollNo;
+            root->name = temp->name;
+            root->cg = temp->cg;
+            root->numSubjects = temp->numSubjects;
+            root->subjects = temp->subjects;
+            deleteStudentByRoll(root->rightC, temp->rollNo);
+        }
+    }
+    if (!root)
+        return;
+    int balance = root->checkBalanceFactor(root);
+    if (balance > 1 && root->checkBalanceFactor(root->leftC) >= 0)
+        root = root->rightRotation(root);
+    else if (balance > 1 && root->checkBalanceFactor(root->leftC) < 0) {
+        root->leftC = root->leftRotation(root->leftC);
+        root = root->rightRotation(root);
+    } else if (balance < -1 && root->checkBalanceFactor(root->rightC) <= 0)
+        root = root->leftRotation(root);
+    else if (balance < -1 && root->checkBalanceFactor(root->rightC) > 0) {
+        root->rightC = root->rightRotation(root->rightC);
+        root = root->leftRotation(root);
+    }
+}
+
 };
 
 
