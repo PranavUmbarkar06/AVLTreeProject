@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 struct courses{
     int courseCode;
