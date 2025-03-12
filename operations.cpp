@@ -1,101 +1,171 @@
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
+
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "AVLtree.hpp"
+#include "NodeOperation.hpp"
 using namespace std;
-struct courses{
-    int courseCode;
-    int marks;
-    courses(int code, float marks){
-        courseCode=code;
-        this->marks=marks;
-    }
-};
-void addnewcourse(BinaryTree*& root,int rollno,int code,float  marks){
+
+void addnewcourse(BinaryTree*& root, int rollno, int code, float marks) {
     BinaryTree* node = root; 
-    while(node!=nullptr&&node->rollNo!=rollno){
-        if(rollno>node->rollNo){node=node->rightC;}
-        else if(rollno<node->rollNo){node=node->leftC;}
+    while (node != nullptr && node->rollNo != rollno) {
+        if (rollno > node->rollNo)
+            node = node->rightC;
+        else
+            node = node->leftC;
     }
-    if(rollno==node->rollNo){
-      courses* newcourses=new courses[node->numSubjects+1];
-      for(int i=0;i<node->numSubjects;i++){
-          newcourses[i]=node->subjects[i];
-      }
-      newcourses[numSubjects]=new courses(code,marks);
-      node->subjects=newcourses;
-      node->numSubjects=node->numSubjects+1;
-    }
-    else return;
-    
-}
-void modifycourses(BinaryTree*& root,int rollno,int code,float  marks){
-    BinaryTree* node = root; 
-    while(node!=nullptr&&node->rollNo!=rollno){
-        if(rollno>node->rollNo){node=node->rightC;}
-        else if(rollno<node->rollNo){node=node->leftC;}
-    }
-    if(rollno==node->rollNo){
-     for(int i=0;i<node->numSubjects;i++){
-         if(code==node->subjects[i]->courseCode){
-             node->subjects[i]->marks=marks;
-         }
-     }
+    if (node && node->rollNo == rollno) {
+        courses* newcourses = new courses[node->numSubjects + 1];
+        for (int i = 0; i < node->numSubjects; i++) {
+            newcourses[i] = node->subjects[i];
+        }
+        newcourses[node->numSubjects] = courses(code, marks);
+        node->subjects = newcourses;
+        node->numSubjects++;
     }
     else return;
 }
-void deleteCourse(BinaryTree*& root,int rollno,int code){
+
+void modifycourses(BinaryTree*& root, int rollno, int code, float marks) {
     BinaryTree* node = root; 
-    while(node!=nullptr&&node->rollNo!=rollno){
-        if(rollno>node->rollNo){node=node->rightC;}
-        else if(rollno<node->rollNo){node=node->leftC;}
+    while (node != nullptr && node->rollNo != rollno) {
+        if (rollno > node->rollNo)
+            node = node->rightC;
+        else
+            node = node->leftC;
     }
-    if(rollno==node->rollNo){
-      courses* newcourses=new courses[node->numSubjects-1];
-      bool check = false;
-      for(int i=0;i<node->numSubjects;i++){
-          if(node->subjects[i]->courseCode==code){
-              check = true;
-          }
-      }
-      if(check){
-          int j=0;
-          for(int i=0;i<node->numSubjects;i++){
-            if(node->subjects[i]->courseCode!=code){
-                newcourses[j++]=node->subjects[i];
+    if (node && node->rollNo == rollno) {
+        for (int i = 0; i < node->numSubjects; i++) {
+            if (code == node->subjects[i].courseCode) {
+                node->subjects[i].marks = marks;
             }
-          }
-          node->subjects=newcourses;
-          node->numSubjects=node->numSubjects-1;
-      }
-    }
-    else return;
-}
-void modifycgbyrollno(BinaryTree*& root,int rollno,float newcg){
-    BinaryTree* node = root; 
-    while(node!=nullptr&&node->rollNo!=rollno){
-        if(rollno>node->rollNo){node=node->rightC;}
-        else{node=node->leftC;}
-    }
-    if(rollno==node->rollNo){
-     node->cg=newcg;
+        }
     }
     else return;
 }
 
-
-void modifycgbycg(BinaryTree*& root,int rollno,float newcg){
+void deleteCourse(BinaryTree*& root, int rollno, int code) {
     BinaryTree* node = root; 
-    while(node!=nullptr&&node->rollNo!=rollno){
-        if(rollno>node->rollNo){node=node->rightC;}
-        else{node=node->leftC;}
+    while (node != nullptr && node->rollNo != rollno) {
+        if (rollno > node->rollNo)
+            node = node->rightC;
+        else
+            node = node->leftC;
     }
-    if(rollno==node->rollNo){
+    if (node && node->rollNo == rollno) {
+        courses* newcourses = new courses[node->numSubjects - 1];
+        bool check = false;
+        for (int i = 0; i < node->numSubjects; i++) {
+            if (node->subjects[i].courseCode == code) {
+                check = true;
+            }
+        }
+        if (check) {
+            int j = 0;
+            for (int i = 0; i < node->numSubjects; i++) {
+                if (node->subjects[i].courseCode != code) {
+                    newcourses[j++] = node->subjects[i];
+                }
+            }
+            node->subjects = newcourses;
+            node->numSubjects--;
+        }
+    }
+    else return;
+}
+
+void modifycgbyrollno(BinaryTree*& root, int rollno, float newcg) {
+    BinaryTree* node = root; 
+    while (node != nullptr && node->rollNo != rollno) {
+        if (rollno > node->rollNo)
+            node = node->rightC;
+        else
+            node = node->leftC;
+    }
+    if (node && node->rollNo == rollno) {
+        node->cg = newcg;
+    }
+    else return;
+}
+
+void modifycgbycg(BinaryTree*& root, int rollno, float newcg) {
+    BinaryTree* node = root; 
+    while (node != nullptr && node->rollNo != rollno) {
+        if (rollno > node->rollNo)
+            node = node->rightC;
+        else
+            node = node->leftC;
+    }
+    if (node && node->rollNo == rollno) {
         BinaryTree* temp = node;
-        deletestudent(root,rollno);
-        temp->cg=newcg;
-        insertstudent(root,temp);
+        temp->deleteStudentByRoll(root, rollno);
+        temp->cg = newcg;
+        temp->insertatAVLbyRoll(root, temp->rollNo, temp->name, temp->cg, temp->numSubjects, temp->subjects);
+        delete temp;
     }
+}
 
+BinaryTree* searchByRoll(BinaryTree* root, int rollno) {
+    if (root == nullptr)
+        return nullptr;
+    if (root->rollNo == rollno)
+        return root;
+    BinaryTree* leftResult = searchByRoll(root->leftC, rollno);
+    if (leftResult != nullptr)
+        return leftResult;
+    return searchByRoll(root->rightC, rollno);
+}
+
+void addNewCourseInCgTree(BinaryTree*& root, int rollno, int code, float marks) {
+    BinaryTree* node = searchByRoll(root, rollno);
+    if (!node)
+        return;
+    courses* newCourses = new courses[node->numSubjects + 1];
+    for (int i = 0; i < node->numSubjects; i++) {
+        newCourses[i] = node->subjects[i];
+    }
+    newCourses[node->numSubjects] = courses(code, marks);
+    node->subjects = newCourses;
+    node->numSubjects++;
+}
+
+void modifyCourseInCgTree(BinaryTree*& root, int rollno, int code, float marks) {
+    BinaryTree* node = searchByRoll(root, rollno);
+    if (!node)
+        return;
+    for (int i = 0; i < node->numSubjects; i++) {
+        if (node->subjects[i].courseCode == code) {
+            node->subjects[i].marks = marks;
+            break;
+        }
+    }
+}
+
+void deleteCourseInCgTree(BinaryTree*& root, int rollno, int code) {
+    BinaryTree* node = searchByRoll(root, rollno);
+    if (!node)
+        return;
+    bool found = false;
+    for (int i = 0; i < node->numSubjects; i++) {
+        if (node->subjects[i].courseCode == code) {
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+        return;
+    courses* newCourses = new courses[node->numSubjects - 1];
+    int j = 0;
+    for (int i = 0; i < node->numSubjects; i++) {
+        if (node->subjects[i].courseCode != code) {
+            newCourses[j++] = node->subjects[i];
+        }
+    }
+    node->subjects = newCourses;
+    node->numSubjects--;
+}
 
 void displayNodes(const vector<BinaryTree*>& nodes) {
     ofstream outfile("output.txt", ios::out);
@@ -110,8 +180,7 @@ void displayNodes(const vector<BinaryTree*>& nodes) {
         outfile << "CGPA: " << node->cg << "\n";
         outfile << "Courses:\n";
         for (int j = 0; j < node->numSubjects; j++) {
-            outfile << node->subjects[j].courseCode << ": " 
-                    << node->subjects[j].marks << "\n";
+            outfile << node->subjects[j].courseCode << ": " << node->subjects[j].marks << "\n";
         }
         if (i < nodes.size() - 1) {
             outfile << "\n";
@@ -216,8 +285,8 @@ void storeBetweenCGs(BinaryTree* root, float cg1, float cg2) {
     displayNodes(nodes);
 }
 
-    else return;
+void deleteStudent(BinaryTree*& root, int rollNo) {
+    root->deleteStudentByRoll(root, rollNo);
 }
-void deleteStudent(BinaryTree* &root, int rollNo){
-    root->deleteStudentbyRoll(root,rollNo);
-}
+
+#endif
