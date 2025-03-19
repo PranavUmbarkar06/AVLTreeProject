@@ -4,6 +4,7 @@
 #include <string>
 #include <exception>
 #include <algorithm>
+#include <vector>
 #include "AVLtree.hpp"
 #include "operations.hpp"
 using namespace std;
@@ -14,7 +15,27 @@ string removeCommas(const string& input) {
     return result;
 }
 
+// Helper function: Inorder traversal that collects all nodes in the AVL tree.
+void inorderTraversal(BinaryTree* root, vector<BinaryTree*>& nodes) {
+    if (root != nullptr) {
+        inorderTraversal(root->leftC, nodes);
+        nodes.push_back(root);
+        inorderTraversal(root->rightC, nodes);
+    }
+}
+
+// Helper function: Store all nodes (i.e. generate output for the entire tree).
+void storeAll(BinaryTree* root) {
+    vector<BinaryTree*> nodes;
+    inorderTraversal(root, nodes);
+    displayNodes(nodes);
+}
+
 int main(){
+    // Clear the output file at the start (so previous data is removed)
+    ofstream clearFile("output.txt", ios::out);
+    clearFile.close();
+
     BinaryTree* AVL = nullptr;
     ifstream fin("input_avl.txt");
     if(!fin){
@@ -205,5 +226,9 @@ int main(){
     }
    
     fin.close();
+
+    // Finally, generate output for the entire AVL tree.
+    storeAll(AVL);
+    
     return 0;
 }
