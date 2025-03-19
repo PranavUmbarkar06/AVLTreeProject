@@ -15,7 +15,6 @@ string removeCommas(const string& input) {
     return result;
 }
 
-// Helper function: Inorder traversal that collects all nodes in the AVL tree.
 void inorderTraversal(BinaryTree* root, vector<BinaryTree*>& nodes) {
     if (root != nullptr) {
         inorderTraversal(root->leftC, nodes);
@@ -24,7 +23,6 @@ void inorderTraversal(BinaryTree* root, vector<BinaryTree*>& nodes) {
     }
 }
 
-// Helper function: Store all nodes (i.e. generate output for the entire tree).
 void storeAll(BinaryTree* root) {
     vector<BinaryTree*> nodes;
     inorderTraversal(root, nodes);
@@ -32,24 +30,19 @@ void storeAll(BinaryTree* root) {
 }
 
 int main(){
-    // Clear the output file at the start (so previous data is removed)
     ofstream clearFile("output.txt", ios::out);
     clearFile.close();
-
     BinaryTree* AVL = nullptr;
     ifstream fin("input_avl.txt");
     if(!fin){
         cerr << "Error opening input file." << endl;
         return 1;
     }
-   
     string s;
     while(getline(fin, s)){
         if(s.empty())
             continue;
-           
         s = removeCommas(s);
-       
         try {
             if(s == "#1" || s == "# 1") {
                 if(!getline(fin, s))
@@ -224,11 +217,7 @@ int main(){
             cerr << "Error processing command: " << e.what() << endl;
         }
     }
-   
     fin.close();
-
-    // Finally, generate output for the entire AVL tree.
     storeAll(AVL);
-    
     return 0;
 }
