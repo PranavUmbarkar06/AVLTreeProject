@@ -1,6 +1,5 @@
 #ifndef OPERATIONS_H
 #define OPERATIONS_H
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -9,7 +8,7 @@
 using namespace std;
 
 void addnewcourse(BinaryTree*& root, int rollno, int code, float marks) {
-    BinaryTree* node = root; 
+    BinaryTree* node = root;
     while (node != nullptr && node->rollNo != rollno) {
         if (rollno > node->rollNo)
             node = node->rightC;
@@ -29,7 +28,7 @@ void addnewcourse(BinaryTree*& root, int rollno, int code, float marks) {
 }
 
 void modifycourses(BinaryTree*& root, int rollno, int code, float marks) {
-    BinaryTree* node = root; 
+    BinaryTree* node = root;
     while (node != nullptr && node->rollNo != rollno) {
         if (rollno > node->rollNo)
             node = node->rightC;
@@ -47,7 +46,7 @@ void modifycourses(BinaryTree*& root, int rollno, int code, float marks) {
 }
 
 void deleteCourse(BinaryTree*& root, int rollno, int code) {
-    BinaryTree* node = root; 
+    BinaryTree* node = root;
     while (node != nullptr && node->rollNo != rollno) {
         if (rollno > node->rollNo)
             node = node->rightC;
@@ -77,7 +76,7 @@ void deleteCourse(BinaryTree*& root, int rollno, int code) {
 }
 
 void modifycgbyrollno(BinaryTree*& root, int rollno, float newcg) {
-    BinaryTree* node = root; 
+    BinaryTree* node = root;
     while (node != nullptr && node->rollNo != rollno) {
         if (rollno > node->rollNo)
             node = node->rightC;
@@ -91,7 +90,7 @@ void modifycgbyrollno(BinaryTree*& root, int rollno, float newcg) {
 }
 
 void modifycgbycg(BinaryTree*& root, int rollno, float newcg) {
-    BinaryTree* node = root; 
+    BinaryTree* node = root;
     while (node != nullptr && node->rollNo != rollno) {
         if (rollno > node->rollNo)
             node = node->rightC;
@@ -168,7 +167,7 @@ void deleteCourseInCgTree(BinaryTree*& root, int rollno, int code) {
 }
 
 void displayNodes(const vector<BinaryTree*>& nodes) {
-    ofstream outfile("output.txt", ios::out);
+    ofstream outfile("output.txt", ios::app);
     if (!outfile) {
         cerr << "Error opening output file." << endl;
         return;
@@ -182,9 +181,7 @@ void displayNodes(const vector<BinaryTree*>& nodes) {
         for (int j = 0; j < node->numSubjects; j++) {
             outfile << node->subjects[j].courseCode << ": " << node->subjects[j].marks << "\n";
         }
-        if (i < nodes.size() - 1) {
-            outfile << "\n";
-        }
+        outfile << "\n";
     }
     outfile.close();
 }
